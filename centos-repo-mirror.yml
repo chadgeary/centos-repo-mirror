@@ -1,0 +1,55 @@
+---
+- name: centos-repo-mirror
+  hosts: '{{ target }}'
+  gather_facts: yes
+  become: true
+  become_user: root
+  tasks:
+
+    - name: EPEL
+      yum:
+        name: epel-release
+        state: latest
+
+    - name: nginx
+      yum:
+        name: nginx
+        state: latest
+
+    - name: centos / epel web conf
+      copy:
+        src: "{{ item }}"
+        dest: "/etc/nginx/conf.d/"
+        owner: root
+        group: root
+        mode: u=rwX,g=rX,o=rX
+      with_fileglob:
+        - "web_conf/*"
+
+    - name: nginx service
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: create sync scripts
+      copy:
+        src: "{{ item }}"
+        dest: "/usr/local/bin/"
+        owner: root
+        group: root
+        mode: 0750
+      with_fileglob:
+        - "bin/*"
+
+    - name: run sync scripts if sync_scripts = true
+      shell: /usr/local/bin/sync_repo_*
+      when: sync_scripts == true
+
+    - name: enable sync scripts cron if sync_cron = true
+      cron:
+        name: "sync repos"
+        minute: "0"
+        hour: "0"
+        job: "for sync_script in /usr/local/bin/sync_repo_*; do $sync_script; done"
+        user: root
