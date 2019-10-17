@@ -36,6 +36,24 @@
         state: started
         enabled: yes
 
+    - name: web directories - centos
+      file:
+        path: "/var/www/html/centos/{{ item }}"
+        state: directory
+        mode: '0755'
+      with_items:
+        - '6'
+        - '7'
+
+    - name: web directories - epel
+      file:
+        path: "/var/www/html/epel/{{ item }}"
+        state: directory
+        mode: '0755'
+      with_items:
+        - '6'
+        - '7'
+
     - name: create sync scripts
       copy:
         src: "{{ item }}"
