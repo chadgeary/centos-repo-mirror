@@ -46,15 +46,15 @@
       with_fileglob:
         - "bin/*"
 
-    - name: run sync scripts if sync_scripts == 'yes'
+    - name: run sync scripts if sync_scripts == true
       shell: /usr/local/bin/sync_repo_*
-      when: sync_scripts == 'yes'
+      when: sync_scripts == true
 
-    - name: enable sync scripts cron if sync_cron == 'yes'
+    - name: enable sync scripts cron if sync_cron == true
       cron:
         name: "sync repos"
         minute: "0"
         hour: "0"
         job: "for sync_script in /usr/local/bin/sync_repo_*; do $sync_script; done"
         user: root
-      when: sync_cron == 'yes'
+      when: sync_cron == true
