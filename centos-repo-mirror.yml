@@ -16,8 +16,12 @@
         name: nginx
         state: latest
 
+    - name: hostname register
+      shell: hostname -f
+      register: hostname_cmd
+
     - name: centos / epel web conf
-      copy:
+      template:
         src: "{{ item }}"
         dest: "/etc/nginx/conf.d/"
         owner: root
