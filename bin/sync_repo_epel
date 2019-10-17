@@ -4,10 +4,10 @@ epel6_mirror_dir="/var/www/html/epel/6/x86_64"
 epel7_mirror_dir="/var/www/html/epel/7/x86_64"
 base_dir="/var/www/html/epel/"
 
-if [[ -d "$epel6_mirror_dir"  && -d "$epel7_mirror_dir" ]] ; then
-    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/6/x86_64/ "$epel6_mirror_dir" && \
-    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/7/x86_64/ "$epel7_mirror_dir" && \
-    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/RPM-GPG-KEY-EPEL-7 "$base_dir" && \
-    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/RPM-GPG-KEY-EPEL-6 "$base_dir" && \
-    rm -rf /var/lock/subsys/rsync_updates
+if [[ -d "$epel6_mirror_dir"  && -d "$epel7_mirror_dir" ]]
+then
+    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/6/x86_64/ "$epel6_mirror_dir"
+    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/7/x86_64/ "$epel7_mirror_dir"
+    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/RPM-GPG-KEY-EPEL-7 "$base_dir"
+    rsync  -avSHP --delete rsync://mirrors.mit.edu/epel/RPM-GPG-KEY-EPEL-6 "$base_dir"
 fi
